@@ -12,6 +12,7 @@ import (
 	"strings"
 )
 
+//структура конфига, описанная в формате json
 type cfgStruct struct {
 	Service string `json:"service"`
 	Data    []struct {
@@ -20,8 +21,10 @@ type cfgStruct struct {
 	} `json:"data"`
 }
 
+//буфер для хранения информации о имеющихся в директории конфигах
 var cfgs map[string]struct{}
 
+//функция, сканирующая директорию config и сохраняющая названия файлов в буфер
 func cfgListGetter() {
 	for i := range cfgs {
 		delete(cfgs, i)
@@ -37,6 +40,18 @@ func cfgListGetter() {
 	})
 }
 
+//обработчик запросов к API
+//для получения конфига нужно отправить GET запрос к http://localhost:80/config/{cfgName}
+//для полученя списка конфигов GET запрос нужно сделать к http://localhost:80/config/List
+//для удаления конфига отправляется DELETE запрос к http://localhost:80/config/{cfgName}
+//для создания или редактирования конфига отправить POST запрос к http://localhost:80/config/
+//при редактировании конфига старый сохраняется с названием {cfgName}_old.json
+//примеры запросов ниже
+//curl -d "{\"service\":\"Outlook\",\"data\":{\"onload\":true,\"prior\":\"medium\"}}" -H "Content-Type: application/json" -X POST http://localhost:80/config
+//curl http://localhost:80/config/List
+//curl http://localhost:80/config/Outlook
+//curl -X DELETE http://localhost:80/config/Outlook
+//тестировалось всё на Windows машине
 func handler(w http.ResponseWriter, r *http.Request) {
 	switch r.Method {
 	case http.MethodDelete:
