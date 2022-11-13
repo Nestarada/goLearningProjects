@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Config editor</title>
+</head>
+<body>
+<script>
+    function cfgCreate() {
+        let req = new XMLHttpRequest();
+        let file = new FormData();
+        file.append("name", document.getElementById("cfgPath").value);
+        file.append("data", document.getElementById("cfgText").value);
+        req.open("POST", 'http://localhost:8080/create', false);
+        req.setRequestHeader('Content-Type', 'text/plain');
+        req.send(file);
+    }
+</script>
+<table>
+    <tr>
+        <th style="font-size: 30px">Config editor</th>
+    </tr>
+    <tr>
+        <td>
+            <table style="height: 33%; width: 100%">
+                <tr>
+                    <td colspan="3"><p>Enter config folder:</p></td>
+                </tr>
+                <tr>
+                    <td colspan="3" width="100%"><input style="width: 100%" name="cfgPath" id="cfgPath"></td>
+                </tr>
+                <tr>
+                    <td width="33%"><button style="width: 100%" name="createBtn" id="createBtn" onclick="cfgCreate()">Create</button></td>
+                    <td width="34%"><button style="width: 100%" name="editBtn" id="editBtn">Edit</button></td>
+                    <td width="33%"><button style="width: 100%" name="deleteBtn" id="deleteBtn">Delete</button></td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <table style="height: 67%; width: 100%">
+                <tr>
+                    <td colspan="2"><p>Config text:</p></td>
+                </tr>
+                <tr>
+                    <td colspan="2"><textarea rows="10" cols="45" style="max-width: 600px; max-height: 300px; min-height: 300px; min-width: 600px" name="cfgText" id="cfgText"></textarea></td>
+                </tr>
+                <tr>
+                    <td><button style="width: 100%" name="sendBtn" id="sendBtn">Send</button></td>
+                    <td><button style="width: 100%" name="clearBtn" id="clearBtn">Clear</button></td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+</table>
+</body>
+</html>
